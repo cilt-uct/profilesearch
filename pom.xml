@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                      http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <name>Sakai Profilesearch</name>
+   <groupId>org.sakaiproject</groupId>
+   <artifactId>profilesearch</artifactId>
+   <organization>
+      <name>Sakai Project</name>
+      <url>http://sakaiproject.org/</url>
+   </organization>
+   <inceptionYear>2007</inceptionYear>
+   <packaging>pom</packaging>
+   <version>0.1</version>
+
+   <properties>
+      <rsfutil.version>0.7.2</rsfutil.version>
+   </properties>
+
+  <parent>
+    <artifactId>base</artifactId>
+    <groupId>org.sakaiproject</groupId>
+    <version>SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+   <!-- RSF (CARET) maven 2 repository -->
+   <repositories>
+      <repository>
+         <id>CARET-Maven2</id>
+         <name>CARET Maven 2 Repository</name>
+         <url>http://www2.caret.cam.ac.uk/maven2</url>
+      </repository>
+   </repositories>
+
+   <modules>
+      <!--  <module>api</module>-->
+      <module>impl</module>
+      <!--  <module>pack</module>-->
+      <!--<module>tool</module>-->
+   </modules>
+
+</project>
