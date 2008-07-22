@@ -10,8 +10,15 @@
 
 	<!-- add sakai application scope bean definitions here -->
 
-
- 
+	<!-- entity provider -->
+	<bean
+		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
+		class="org.sakaiproject.profilesearch.logic.impl.SakaiPersonEntityProviderImpl">
+		<property name="sakaiPersonManager"
+			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
+			<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+	</bean>
+ <!-- 
   <bean id="sakaiPersonAdaptor" 
     class="org.sakaiproject.org.sakaiproject.profilesearch.logic.impl.SakaiPersonContentProducer"
     singleton="true"
@@ -33,6 +40,6 @@
     </property>
   </bean>
   
-
+-->
 
 </beans>
