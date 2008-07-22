@@ -35,13 +35,6 @@
          <scope>runtime</scope>
       </dependency>
 
-      <!-- list any other needed runtime dependencies here -->
-      <dependency>
-         <groupId>generic-dao</groupId>
-         <artifactId>generic-dao</artifactId>
-         <version>0.91</version>
-         <scope>runtime</scope>
-      </dependency>
 
    </dependencies>
 
