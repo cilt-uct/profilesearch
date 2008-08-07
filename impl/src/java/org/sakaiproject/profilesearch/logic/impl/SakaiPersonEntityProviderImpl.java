@@ -18,10 +18,10 @@ import org.sakaiproject.entitybroker.entityprovider.capabilities.ActionsExecutab
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 
-
+//, ActionsExecutable
 public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implements
 		 CoreEntityProvider,
-		AutoRegisterEntityProvider, RESTful, ActionsExecutable  {
+		AutoRegisterEntityProvider, RESTful  {
 
 	private static Log log = LogFactory.getLog(SakaiPersonEntityProviderImpl.class);
 	
