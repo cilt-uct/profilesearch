@@ -41,7 +41,7 @@
       <!-- Various Sakai dependencies -->
       <dependency>
          <groupId>org.sakaiproject.kernel</groupId>
-         <artifactId>sakai-kernal-api</artifactId>
+         <artifactId>sakai-kernel-api</artifactId>
       </dependency>
       <dependency>
          <groupId>org.sakaiproject.entitybroker</groupId>
