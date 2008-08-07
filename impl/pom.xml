@@ -30,7 +30,7 @@
       <!-- spring and hibernate -->
       <dependency>
          <groupId>org.springframework</groupId>
-         <artifactId>$spring</artifactId>
+         <artifactId>spring</artifactId>
       </dependency>
 
       <dependency>
