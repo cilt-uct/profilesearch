@@ -1,6 +1,7 @@
 package org.sakaiproject.profilesearch.logic.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,13 +14,14 @@ import org.sakaiproject.entitybroker.entityprovider.capabilities.RESTful;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.ActionsExecutable;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 
 
 public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implements
 		 CoreEntityProvider,
-		AutoRegisterEntityProvider, RESTful  {
+		AutoRegisterEntityProvider, RESTful, ActionsExecutable  {
 
 	private static Log log = LogFactory.getLog(SakaiPersonEntityProviderImpl.class);
 	
@@ -109,6 +111,26 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 
 	public String[] getHandledInputFormats() {
 		 return new String[] {Formats.HTML, Formats.XML, Formats.JSON};
+	}
+
+	public String createEntity(EntityReference ref, Object entity, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updateEntity(EntityReference ref, Object entity, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteEntity(EntityReference ref, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<?> getEntities(EntityReference ref, Search search, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
