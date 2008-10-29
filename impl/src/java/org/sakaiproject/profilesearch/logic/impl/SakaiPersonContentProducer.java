@@ -2,19 +2,30 @@ package org.sakaiproject.profilesearch.logic.impl;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
+import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.AuthzGroupService;
+import org.sakaiproject.authz.api.GroupNotDefinedException;
+import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.entitybroker.EntityBroker;
+import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.search.api.EntityContentProducer;
 import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
+import org.sakaiproject.site.api.SiteService;
 
 /**
  * @author dhorwitz
@@ -22,6 +33,7 @@ import org.sakaiproject.search.model.SearchBuilderItem;
  */
 public class SakaiPersonContentProducer implements EntityContentProducer {
 
+	private static Log log = LogFactory.getLog(SakaiPersonContentProducer.class);
 	// runtime dependency
 	private List addEvents = null;
 
@@ -45,6 +57,26 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	{
 		this.serverConfigurationService = serverConfigurationService;
 	}
+	
+	private SiteService siteService;
+	
+	public void setSiteService(SiteService siteService) {
+		this.siteService = siteService;
+	}
+
+	private AuthzGroupService authzGroupService;
+	
+	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+		this.authzGroupService = authzGroupService;
+	}
+	
+	private DeveloperHelperService developerHelperService;
+	public void setDeveloperHelperService(
+			DeveloperHelperService developerHelperService) {
+		this.developerHelperService = developerHelperService;
+	}
+
+
 	/**
 	 * @param addEvents
 	 *        The addEvents to set.
@@ -76,7 +108,16 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		this.searchIndexBuilder = searchIndexBuilder;
 	}
 
-	
+	// runtime dependency
+	private String toolName = null;
+	/**
+	 * @param toolName
+	 *        The toolName to set.
+	 */
+	public void setToolName(String toolName)
+	{
+		this.toolName = toolName;
+	}
 	
 	public void init()
 	{
@@ -88,10 +129,12 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			{
 				searchService.registerFunction((String) i.next());
 			}
+			/* there are no remove events for sakaiperson!
 			for (Iterator i = removeEvents.iterator(); i.hasNext();)
 			{
 				searchService.registerFunction((String) i.next());
 			}
+			*/
 			searchIndexBuilder.registerEntityContentProducer(this);
 		}
 	}
@@ -109,12 +152,14 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	public String getContent(String reference) {
+		log.info("getting " + reference);
 		SakaiPerson sp = (SakaiPerson)entityBroker.fetchEntity(reference);
 		StringBuilder sb = new StringBuilder();
-		sb.append("firstName: " + sp.getGivenName());
-		sb.append("lastName: " + sp.getSurname());
-		sb.append("email: " + sp.getMail());
-		
+		if (sp != null) {
+			sb.append("firstName: " + sp.getGivenName());
+			sb.append("lastName: " + sp.getSurname());
+			sb.append("email: " + sp.getMail());
+		}
 		return sb.toString();
 	}
 
@@ -141,17 +186,43 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 	public List getSiteContent(String context) {
 		// TODO Auto-generated method stub
+		log.info("getting SakaiPersons in " + context);
+		List<String> all = new ArrayList<String>();
+		//get the members of the site
+		try {
+			//context is a site id
+			String ref = siteService.siteReference(context);
+			AuthzGroup group = authzGroupService.getAuthzGroup(ref);
+			Set<Member> members = group.getMembers();
+			log.info("got "  + members.size() + " members");
+			Iterator it = members.iterator();
+			while (it.hasNext()) {
+				Member me = (Member)it.next();
+				String userId = me.getUserId();
+				String pref = "/SakaiPerson/" + userId;
+				log.info("adding " + pref);
+				all.add(pref);
+			}
+			
+			return all;
+		} catch (GroupNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		return null;
 	}
 
 	public Iterator getSiteContentIterator(String context) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return getSiteContent(context).iterator();
 	}
 
 	public String getSiteId(String reference) {
 		// TODO Auto-generated method stub
-		return null;
+		return ".auth";
+				
 	}
 
 	public String getSubType(String ref) {
@@ -167,8 +238,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	public String getTool() {
-		// TODO Auto-generated method stub
-		return null;
+		return toolName;
 	}
 
 	public String getType(String ref) {
@@ -187,12 +257,26 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	public boolean isForIndex(String reference) {
-		// TODO Auto-generated method stub
-		return true;
+		log.info("isForIndex " + reference);
+		EntityReference ref = new EntityReference(reference);
+		SakaiPerson sp = this.spm.getSakaiPerson(ref.getId(), spm.getSystemMutableType());
+		if (sp != null) {
+			log.info("is for index");
+			return true;
+		}
+		return false;
 	}
 
+	
 	public boolean matches(String reference) {
-		// TODO Auto-generated method stub
+		EntityReference ref = new EntityReference(reference);
+		String prefix = ref.getPrefix();
+		log.info(reference + "tool ref: " + prefix);
+		if (toolName.endsWith(prefix)) {
+			log.info("Matches!");
+			return true;
+		}
+		
 		return false;
 	}
 

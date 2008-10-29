@@ -18,20 +18,22 @@
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 			<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
 	</bean>
- <!-- 
+ 
   <bean id="sakaiPersonAdaptor" 
-    class="org.sakaiproject.org.sakaiproject.profilesearch.logic.impl.SakaiPersonContentProducer"
+    class="org.sakaiproject.profilesearch.logic.impl.SakaiPersonContentProducer"
     singleton="true"
     init-method="init" >
-    <property name="sakaiPersonManager" ><ref bean="org.sakaiproject.api.common.edu.person.SakaiPersonManager;"/></property>
-    
+    <property name="sakaiPersonManager" >
+    	<ref bean="org.sakaiproject.api.common.edu.person.SakaiPersonManager"/>
+    </property>
+    <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
      <property name="searchService"><ref bean="org.sakaiproject.search.api.SearchService"/></property>
      <property name="searchIndexBuilder"><ref bean="org.sakaiproject.search.api.SearchIndexBuilder" /></property>
      <property name="serverConfigurationService"><ref bean="org.sakaiproject.component.api.ServerConfigurationService"/></property>
-    
-    
-    
-    <property name="toolName" ><value>sakaiPerson</value></property>
+	 <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+	 <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"/>  
+	 <property name="toolName" ><value>SakaiPerson</value></property>
+	 <property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker"/>
     <property name="addEvents" >
       <list>
         <value>SakaiPerson.create</value>
@@ -40,6 +42,6 @@
     </property>
   </bean>
   
--->
+
 
 </beans>
