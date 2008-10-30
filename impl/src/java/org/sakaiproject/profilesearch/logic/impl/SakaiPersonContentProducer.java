@@ -287,8 +287,8 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			eid = userDirectoryService.getUserEid(userId);
 			Map<String, String> parameters = new HashMap<String,String>();
 			parameters.put("id", eid);
-			url = developerHelperService.getToolViewURL("sakai.profilewow", "/viewProfile", parameters, "/site/~01302922/");
-			
+			//url = developerHelperService.getToolViewURL("sakai.profilewow", "/viewProfile", parameters, "/site/~01302922/");
+			url = "/direct/SakaiPerson/" + userId;
 		} catch (UserNotDefinedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
