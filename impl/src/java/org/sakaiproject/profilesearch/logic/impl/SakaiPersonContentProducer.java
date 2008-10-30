@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
+import org.sakaiproject.api.common.type.TypeManager;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
@@ -26,6 +27,8 @@ import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserDirectoryService;
 
 /**
  * @author dhorwitz
@@ -75,6 +78,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			DeveloperHelperService developerHelperService) {
 		this.developerHelperService = developerHelperService;
 	}
+
 
 
 	/**
@@ -146,14 +150,16 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return true;
 	}
 
-	public String getContainer(String ref) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getContainer(String reference) {
+		
+		EntityReference ref = new EntityReference(reference);
+		String ret = ref.getSpaceReference();
+		return ret;
 	}
 
 	public String getContent(String reference) {
 		log.info("getting " + reference);
-		SakaiPerson sp = (SakaiPerson)entityBroker.fetchEntity(reference);
+		SakaiPerson sp = spm.getSakaiPerson(getId(reference), spm.getUserMutableType());
 		StringBuilder sb = new StringBuilder();
 		if (sp != null) {
 			sb.append("firstName: " + sp.getGivenName());
@@ -177,40 +183,39 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return null;
 	}
 
-	public String getId(String ref) {
-		SakaiPerson sp = (SakaiPerson)entityBroker.fetchEntity(ref);
-		if (sp != null)
-			return 	sp.getUid();
-		return null;
+	public String getId(String reference) {
+		EntityReference ref = new EntityReference(reference);
+		String ret = ref.getId();
+		return ret;
 	}
 
+	private UserDirectoryService userDirectoryService;
 	public List getSiteContent(String context) {
-		// TODO Auto-generated method stub
+
 		log.info("getting SakaiPersons in " + context);
-		List<String> all = new ArrayList<String>();
-		//get the members of the site
-		try {
-			//context is a site id
-			String ref = siteService.siteReference(context);
-			AuthzGroup group = authzGroupService.getAuthzGroup(ref);
-			Set<Member> members = group.getMembers();
-			log.info("got "  + members.size() + " members");
-			Iterator it = members.iterator();
-			while (it.hasNext()) {
-				Member me = (Member)it.next();
-				String userId = me.getUserId();
-				String pref = "/SakaiPerson/" + userId;
-				log.info("adding " + pref);
-				all.add(pref);
+		if ("!admin".equals(context)) {
+			List<String> all = new ArrayList<String>();
+			//get the members of the site
+			try {
+				//context is a site id
+				String ref = siteService.siteReference(context);
+				List<User> users = userDirectoryService.getUsers();
+				log.info("got "  + users.size() + " members");
+				for (int i = 0; i < users.size(); i++) {
+					User me = (User)users.get(i);
+					String userId = me.getId();
+					String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/" + userId;
+					log.info("adding " + pref);
+					all.add(pref);
+				}
+
+				return all;
+			} catch (GroupNotDefinedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			return all;
-		} catch (GroupNotDefinedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		
-		
+
 		return null;
 	}
 
@@ -224,16 +229,22 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return ".auth";
 				
 	}
+	
+	
+	public String getType(String reference) {
+		EntityReference ref = new EntityReference(reference);
+		String ret = ""; // ref.getIdFromRefByKey("ref", "type");
+		return ret;
+	}
 
-	public String getSubType(String ref) {
-		// TODO Auto-generated method stub
+	public String getSubType(String reference) {
 		return null;
 	}
 
 	public String getTitle(String reference) {
 		// TODO Auto-generated method stub
-		SakaiPerson sp = (SakaiPerson)entityBroker.fetchEntity(reference);
-		
+		log.info("getTitle(String " + reference +" )");
+		SakaiPerson sp = spm.getSakaiPerson(getId(reference), spm.getUserMutableType());
 		return sp.getGivenName() + " " + sp.getSurname();
 	}
 
@@ -241,14 +252,11 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return toolName;
 	}
 
-	public String getType(String ref) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	public String getUrl(String reference) {
 		// TODO Auto-generated method stub
-		return null;
+		return reference;
 	}
 
 	public boolean isContentFromReader(String reference) {
