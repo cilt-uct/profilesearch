@@ -41,6 +41,11 @@
         <value>SakaiPerson.update</value>
       </list>
     </property>
+   <property name="removeEvents" >
+      <list>
+        <value>SakaiPerson.delete</value>
+      </list>
+    </property>
   </bean>
   
 

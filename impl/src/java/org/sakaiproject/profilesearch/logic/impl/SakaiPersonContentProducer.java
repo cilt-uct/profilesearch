@@ -96,6 +96,10 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	
+	public void setRemoveEvents(List removeEvents) {
+		this.removeEvents = removeEvents;
+	}
+
 	// injected dependency
 	private SearchService searchService = null;
 	/**
@@ -138,12 +142,12 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			{
 				searchService.registerFunction((String) i.next());
 			}
-			/* there are no remove events for sakaiperson!
+			
 			for (Iterator i = removeEvents.iterator(); i.hasNext();)
 			{
 				searchService.registerFunction((String) i.next());
 			}
-			*/
+			
 			searchIndexBuilder.registerEntityContentProducer(this);
 		}
 	}
@@ -211,23 +215,21 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			
 			boolean doAnother = true;
 			while (doAnother) {
+				log.info("first: " + first + " last " + last);
 				List<User> users = userDirectoryService.getUsers(first, last);
-				log.info("got "  + users.size() + " members");
+				log.info("got "  + users.size() + " users");
 				for (int i = 0; i < users.size(); i++) {
 					User me = (User)users.get(i);
 					String userId = me.getId();
 					String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/id/" + userId;
 					log.info("adding " + pref);
 					all.add(pref);
-					
-					if (users.size() < increment) {
-						doAnother = false;
-					} else {
-						first = last +1;
-						last = last + increment;
-					}
-						
-					
+				}
+				if (users.size() < increment) {
+					doAnother = false;
+				} else {
+					first = last +1;
+					last = last + increment;
 				}
 			}
 
