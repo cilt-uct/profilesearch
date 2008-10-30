@@ -199,7 +199,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 			//context is a site id
 			String ref = siteService.siteReference(context);
-			List<User> users = userDirectoryService.getUsers();
+			List<User> users = userDirectoryService.getUsers(0,500);
 			log.info("got "  + users.size() + " members");
 			for (int i = 0; i < users.size(); i++) {
 				User me = (User)users.get(i);
