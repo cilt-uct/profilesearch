@@ -164,7 +164,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 	public String getContent(String reference) {
 		log.info("getting " + reference);
-		SakaiPerson sp = spm.getSakaiPerson(getId(reference), spm.getUserMutableType());
+		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		StringBuilder sb = new StringBuilder();
 		if (sp != null) {
 			sb.append("firstName: " + sp.getGivenName());
@@ -205,14 +205,30 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 			//context is a site id
 			String ref = siteService.siteReference(context);
-			List<User> users = userDirectoryService.getUsers(1,500);
-			log.info("got "  + users.size() + " members");
-			for (int i = 0; i < users.size(); i++) {
-				User me = (User)users.get(i);
-				String userId = me.getId();
-				String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/" + userId;
-				log.info("adding " + pref);
-				all.add(pref);
+			int first = 1;
+			int last = 500;
+			int increment = 500;
+			
+			boolean doAnother = true;
+			while (doAnother) {
+				List<User> users = userDirectoryService.getUsers(first, last);
+				log.info("got "  + users.size() + " members");
+				for (int i = 0; i < users.size(); i++) {
+					User me = (User)users.get(i);
+					String userId = me.getId();
+					String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/id/" + userId;
+					log.info("adding " + pref);
+					all.add(pref);
+					
+					if (users.size() < increment) {
+						doAnother = false;
+					} else {
+						first = last +1;
+						last = last + increment;
+					}
+						
+					
+				}
 			}
 
 			return all;
@@ -249,7 +265,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	public String getTitle(String reference) {
 		// TODO Auto-generated method stub
 		log.info("getTitle(String " + reference +" )");
-		SakaiPerson sp = spm.getSakaiPerson(getId(reference), spm.getUserMutableType());
+		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		return sp.getGivenName() + " " + sp.getSurname();
 	}
 
@@ -261,15 +277,15 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 	public String getUrl(String reference) {
 		// /viewProfile?id=t0016405
-		EntityReference ref = new EntityReference(reference);
-		String userId = ref.getId();
+		SakaiPerson sp = getSakaiPersonFromRef(reference);
+		String userId = sp.getUid();
 		String eid;
 		String url = null;
 		try {
 			eid = userDirectoryService.getUserEid(userId);
 			Map<String, String> parameters = new HashMap<String,String>();
 			parameters.put("id", eid);
-			url = developerHelperService.getToolViewURL("saka.profilewow", "/viewProfile", parameters, null);
+			url = developerHelperService.getToolViewURL("sakai.profilewow", "/viewProfile", parameters, "/site/~01302922/");
 			
 		} catch (UserNotDefinedException e) {
 			// TODO Auto-generated catch block
@@ -285,13 +301,20 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 	public boolean isForIndex(String reference) {
 		log.info("isForIndex " + reference);
-		EntityReference ref = new EntityReference(reference);
-		SakaiPerson sp = this.spm.getSakaiPerson(ref.getId(), spm.getSystemMutableType());
+		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		if (sp != null) {
-			log.info("is for index");
+			log.info("we index this one index");
 			return true;
-		}
+		} 
+		log.info("no sakai person found for id " + reference);
 		return false;
+	}
+
+	private SakaiPerson getSakaiPersonFromRef(String reference) {
+		EntityReference ref = new EntityReference(reference);
+		final String id = ref.getIdFromRefByKey(reference, "id");
+		SakaiPerson sp = this.spm.getSakaiPerson(id, spm.getUserMutableType());
+		return sp;
 	}
 
 	
