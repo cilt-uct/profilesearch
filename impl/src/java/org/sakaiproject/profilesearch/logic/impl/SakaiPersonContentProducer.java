@@ -79,7 +79,10 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		this.developerHelperService = developerHelperService;
 	}
 
-
+	private UserDirectoryService userDirectoryService;
+	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
+		this.userDirectoryService = userDirectoryService;
+	}
 
 	/**
 	 * @param addEvents
@@ -189,17 +192,18 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return ret;
 	}
 
-	private UserDirectoryService userDirectoryService;
+	
 	public List getSiteContent(String context) {
 
 		log.info("getting SakaiPersons in " + context);
+		List<String> all = new ArrayList<String>();
 		if ("!admin".equals(context)) {
-			List<String> all = new ArrayList<String>();
+			
 			//get the members of the site
 
 			//context is a site id
 			String ref = siteService.siteReference(context);
-			List<User> users = userDirectoryService.getUsers(0,500);
+			List<User> users = userDirectoryService.getUsers(1,500);
 			log.info("got "  + users.size() + " members");
 			for (int i = 0; i < users.size(); i++) {
 				User me = (User)users.get(i);
@@ -211,9 +215,11 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 			return all;
 
+		} else {
+			log.info("wont look for users in " + context);
 		}
 
-		return null;
+		return all;
 	}
 
 	public Iterator getSiteContentIterator(String context) {

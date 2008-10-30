@@ -34,6 +34,7 @@
 	 <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"/>  
 	 <property name="toolName" ><value>SakaiPerson</value></property>
 	 <property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker"/>
+	 <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     <property name="addEvents" >
       <list>
         <value>SakaiPerson.create</value>
