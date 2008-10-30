@@ -167,7 +167,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	public String getContent(String reference) {
-		log.info("getting " + reference);
+		log.debug("getting " + reference);
 		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		StringBuilder sb = new StringBuilder();
 		if (sp != null) {
@@ -215,14 +215,14 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			
 			boolean doAnother = true;
 			while (doAnother) {
-				log.info("first: " + first + " last " + last);
+				log.debug("first: " + first + " last " + last);
 				List<User> users = userDirectoryService.getUsers(first, last);
 				log.info("got "  + users.size() + " users");
 				for (int i = 0; i < users.size(); i++) {
 					User me = (User)users.get(i);
 					String userId = me.getId();
 					String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/id/" + userId;
-					log.info("adding " + pref);
+					log.debug("adding " + pref);
 					all.add(pref);
 				}
 				if (users.size() < increment) {
@@ -266,7 +266,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 	public String getTitle(String reference) {
 		// TODO Auto-generated method stub
-		log.info("getTitle(String " + reference +" )");
+		log.debug("getTitle(String " + reference +" )");
 		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		return sp.getGivenName() + " " + sp.getSurname();
 	}
@@ -302,13 +302,13 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	public boolean isForIndex(String reference) {
-		log.info("isForIndex " + reference);
+		log.debug("isForIndex " + reference);
 		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		if (sp != null) {
 			log.info("we index this one index");
 			return true;
 		} 
-		log.info("no sakai person found for id " + reference);
+		log.debug("no sakai person found for id " + reference);
 		return false;
 	}
 
@@ -323,7 +323,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	public boolean matches(String reference) {
 		EntityReference ref = new EntityReference(reference);
 		String prefix = ref.getPrefix();
-		log.info(reference + "tool ref: " + prefix);
+		log.debug(reference + "tool ref: " + prefix);
 		if (toolName.endsWith(prefix)) {
 			log.info("Matches!");
 			return true;
@@ -355,8 +355,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	public boolean matches(Event event) {
-		// TODO Auto-generated method stub
-		return false;
+		return matches(event.getResource());
 	}
 
 }
