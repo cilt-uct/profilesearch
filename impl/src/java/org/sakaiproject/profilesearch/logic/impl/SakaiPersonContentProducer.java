@@ -3,6 +3,7 @@ package org.sakaiproject.profilesearch.logic.impl;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 
 /**
  * @author dhorwitz
@@ -258,8 +260,22 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 
 
 	public String getUrl(String reference) {
-		// TODO Auto-generated method stub
-		return reference;
+		// /viewProfile?id=t0016405
+		EntityReference ref = new EntityReference(reference);
+		String userId = ref.getId();
+		String eid;
+		String url = null;
+		try {
+			eid = userDirectoryService.getUserEid(userId);
+			Map<String, String> parameters = new HashMap<String,String>();
+			parameters.put("id", eid);
+			url = developerHelperService.getToolViewURL("saka.profilewow", "/viewProfile", parameters, null);
+			
+		} catch (UserNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return url;
 	}
 
 	public boolean isContentFromReader(String reference) {
