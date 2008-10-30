@@ -196,24 +196,21 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		if ("!admin".equals(context)) {
 			List<String> all = new ArrayList<String>();
 			//get the members of the site
-			try {
-				//context is a site id
-				String ref = siteService.siteReference(context);
-				List<User> users = userDirectoryService.getUsers();
-				log.info("got "  + users.size() + " members");
-				for (int i = 0; i < users.size(); i++) {
-					User me = (User)users.get(i);
-					String userId = me.getId();
-					String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/" + userId;
-					log.info("adding " + pref);
-					all.add(pref);
-				}
 
-				return all;
-			} catch (GroupNotDefinedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			//context is a site id
+			String ref = siteService.siteReference(context);
+			List<User> users = userDirectoryService.getUsers();
+			log.info("got "  + users.size() + " members");
+			for (int i = 0; i < users.size(); i++) {
+				User me = (User)users.get(i);
+				String userId = me.getId();
+				String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/" + userId;
+				log.info("adding " + pref);
+				all.add(pref);
 			}
+
+			return all;
+
 		}
 
 		return null;
