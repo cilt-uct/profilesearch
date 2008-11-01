@@ -201,7 +201,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	
 	public List getSiteContent(String context) {
 
-		log.info("getting SakaiPersons in " + context);
+		log.debug("getting SakaiPersons in " + context);
 		List<String> all = new ArrayList<String>();
 		if ("!admin".equals(context)) {
 			
@@ -217,7 +217,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			while (doAnother) {
 				log.debug("first: " + first + " last " + last);
 				List<User> users = userDirectoryService.getUsers(first, last);
-				log.info("got "  + users.size() + " users");
+				log.debug("got "  + users.size() + " users");
 				for (int i = 0; i < users.size(); i++) {
 					User me = (User)users.get(i);
 					String userId = me.getId();
@@ -236,7 +236,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			return all;
 
 		} else {
-			log.info("wont look for users in " + context);
+			log.debug("wont look for users in " + context);
 		}
 
 		return all;
@@ -305,7 +305,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		log.debug("isForIndex " + reference);
 		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		if (sp != null) {
-			log.info("we index this one index");
+			log.debug("we index this one index");
 			return true;
 		} 
 		log.debug("no sakai person found for id " + reference);
@@ -325,7 +325,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		String prefix = ref.getPrefix();
 		log.debug(reference + "tool ref: " + prefix);
 		if (toolName.endsWith(prefix)) {
-			log.info("Matches!");
+			log.debug("Matches!");
 			return true;
 		}
 		
