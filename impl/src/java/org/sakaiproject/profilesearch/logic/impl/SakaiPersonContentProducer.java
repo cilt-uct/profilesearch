@@ -155,7 +155,6 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	
 
 	public boolean canRead(String reference) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -305,6 +304,14 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		log.debug("isForIndex " + reference);
 		SakaiPerson sp = getSakaiPersonFromRef(reference);
 		if (sp != null) {
+			//check this is not orphaned
+			try {
+				User u = userDirectoryService.getUser(sp.getAgentUuid());
+			}
+			catch (UserNotDefinedException e) {
+				log.warn("No user found for: " + sp.getAgentUuid());
+				return false;
+			}
 			log.debug("we index this one index");
 			return true;
 		} 
