@@ -18,7 +18,7 @@
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 			<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
 	</bean>
- 
+ <!--  
   <bean id="sakaiPersonAdaptor" 
     class="org.sakaiproject.profilesearch.logic.impl.SakaiPersonContentProducer"
     singleton="true"
@@ -49,5 +49,5 @@
   </bean>
   
 
-
+-->
 </beans>
