@@ -84,7 +84,11 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 			throw new SecurityException();
 		}
 		
-		
+		// VULA-146 For now only allow the user's own profile
+		if (!sessionManager.getCurrentSessionUserId().equals(ref.getId())) {
+			throw new SecurityException();
+		}
+				
 	      if (ref.getId() == null) {
 	          return sakaiPersonManager.getPrototype();
 	       }

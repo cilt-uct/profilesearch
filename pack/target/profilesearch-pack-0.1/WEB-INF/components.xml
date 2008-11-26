@@ -18,7 +18,7 @@
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 			<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
 	</bean>
- <!--  
+ 
   <bean id="sakaiPersonAdaptor" 
     class="org.sakaiproject.profilesearch.logic.impl.SakaiPersonContentProducer"
     singleton="true"
@@ -37,17 +37,17 @@
 	 <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     <property name="addEvents" >
       <list>
-        <value>profile.create</value>
-        <value>profile.update</value>
+        <value>SakaiPerson.create</value>
+        <value>SakaiPerson.update</value>
       </list>
     </property>
    <property name="removeEvents" >
       <list>
-        <value>profile.delete</value>
+        <value>SakaiPerson.delete</value>
       </list>
     </property>
   </bean>
   
 
--->
+
 </beans>
