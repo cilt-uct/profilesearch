@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
+import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.AutoRegisterEntityProvider;
@@ -37,6 +38,11 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		this.sessionManager = sessionManager;
 	}
 
+	private DeveloperHelperService developerHelperService;
+	public void setDeveloperHelperService(
+			DeveloperHelperService developerHelperService) {
+		this.developerHelperService = developerHelperService;
+	}
 	
 	public final static String ENTITY_PREFIX = "Profile";
 	
@@ -85,7 +91,7 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		}
 		
 		// VULA-146 For now only allow the user's own profile
-		if (!sessionManager.getCurrentSessionUserId().equals(ref.getId())) {
+		if ((!sessionManager.getCurrentSessionUserId().equals(ref.getId())) && ! developerHelperService.isUserAdmin(developerHelperService.getCurrentUserReference())) {
 			throw new SecurityException();
 		}
 				
