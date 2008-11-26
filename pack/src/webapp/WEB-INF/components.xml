@@ -17,6 +17,7 @@
 		<property name="sakaiPersonManager"
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 			<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+			 <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"/>  
 	</bean>
  <!--  
   <bean id="sakaiPersonAdaptor" 
