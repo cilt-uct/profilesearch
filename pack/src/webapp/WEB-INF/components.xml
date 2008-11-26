@@ -37,13 +37,13 @@
 	 <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     <property name="addEvents" >
       <list>
-        <value>sakaiPerson.create</value>
-        <value>sakaiPerson.update</value>
+        <value>profile.create</value>
+        <value>profile.update</value>
       </list>
     </property>
    <property name="removeEvents" >
       <list>
-        <value>sakaiPerson.delete</value>
+        <value>profile.delete</value>
       </list>
     </property>
   </bean>

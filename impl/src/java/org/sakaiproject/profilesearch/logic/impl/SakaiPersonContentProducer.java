@@ -220,7 +220,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 				for (int i = 0; i < users.size(); i++) {
 					User me = (User)users.get(i);
 					String userId = me.getId();
-					String pref = "/SakaiPerson/type/" + spm.getUserMutableType().getUuid() + "/id/" + userId;
+					String pref = "/Profile/type/" + spm.getUserMutableType().getUuid() + "/id/" + userId;
 					log.debug("adding " + pref);
 					all.add(pref);
 				}

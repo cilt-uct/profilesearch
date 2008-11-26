@@ -38,7 +38,7 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 	}
 
 	
-	public final static String ENTITY_PREFIX = "SakaiPerson";
+	public final static String ENTITY_PREFIX = "Profile";
 	
 	public String getEntityPrefix() {
 		return ENTITY_PREFIX;
