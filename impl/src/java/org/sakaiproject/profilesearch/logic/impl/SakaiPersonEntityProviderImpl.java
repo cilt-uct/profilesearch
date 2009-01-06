@@ -91,18 +91,33 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		}
 		
 		// VULA-146 For now only allow the user's own profile
+		/*
 		if ((!sessionManager.getCurrentSessionUserId().equals(ref.getId())) && ! developerHelperService.isUserAdmin(developerHelperService.getCurrentUserReference())) {
 			throw new SecurityException();
 		}
-				
+		*/	
 	      if (ref.getId() == null) {
 	          return sakaiPersonManager.getPrototype();
 	       }
 	       SakaiPerson entity = sakaiPersonManager.getSakaiPerson(ref.getId(), (sakaiPersonManager.getUserMutableType())); 
 	       if (entity != null) {
-	          return entity;
+	    	   if (((!sessionManager.getCurrentSessionUserId().equals(ref.getId())) && ! developerHelperService.isUserAdmin(developerHelperService.getCurrentUserReference()))) {
+	    		   return getPublicProfile(entity);
+	    	   } else {
+	    		   return entity;
+	    	   }
 	       }
 	       throw new IllegalArgumentException("Invalid id:" + ref.getId());
+	}
+
+	private Object getPublicProfile(SakaiPerson profile) {
+		SakaiPerson publicProfile = sakaiPersonManager.getPrototype();
+		publicProfile.setAgentUuid(profile.getAgentUuid());
+		publicProfile.setGivenName(profile.getGivenName());
+		publicProfile.setMail(profile.getMail());
+		publicProfile.setSystemPicturePreferred(profile.isSystemPicturePreferred());
+		publicProfile.setPictureUrl(profile.getPictureUrl());
+		return profile;
 	}
 
 	public void deleteEntity(EntityReference ref) {
