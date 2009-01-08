@@ -15,9 +15,10 @@ import org.sakaiproject.entitybroker.entityprovider.capabilities.RESTful;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
-//import org.sakaiproject.entitybroker.entityprovider.capabilities.ActionsExecutable;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 
 //, ActionsExecutable
 public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implements
@@ -44,6 +45,12 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		this.developerHelperService = developerHelperService;
 	}
 	
+	private UserDirectoryService userDirectoryService; 
+	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
+		this.userDirectoryService = userDirectoryService;
+	}
+
+	
 	public final static String ENTITY_PREFIX = "profile";
 	
 	public String getEntityPrefix() {
@@ -55,12 +62,17 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		
 		sakaiPersonId = id;
 		try{
-			SakaiPerson sp = sakaiPersonManager.getSakaiPerson(sakaiPersonId, (sakaiPersonManager.getUserMutableType()));
+			
+			String userId = userDirectoryService.getUserId(sakaiPersonId);
+			SakaiPerson sp = sakaiPersonManager.getSakaiPerson(userId, (sakaiPersonManager.getUserMutableType()));
 			if (sp != null)
 				return true;
 
 		} catch (NumberFormatException e) {
 			// invalid number so roll through to the false
+		} catch (UserNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		log.warn("SakaiPerson: " + id +" does not exist");
