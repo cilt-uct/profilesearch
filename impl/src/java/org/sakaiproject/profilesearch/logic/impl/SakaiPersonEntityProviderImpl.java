@@ -71,8 +71,8 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		} catch (NumberFormatException e) {
 			// invalid number so roll through to the false
 		} catch (UserNotDefinedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//user not found is expected
+			return false;
 		}
 
 		log.warn("SakaiPerson: " + id +" does not exist");
