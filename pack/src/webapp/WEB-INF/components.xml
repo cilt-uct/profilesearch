@@ -26,4 +26,27 @@
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 </bean>
 
+   <bean id="blogEntryAdaptor" 
+    class="org.sakaiproject.profilesearch.logic.impl.BlogwowEntryEntityContentProducer"
+    singleton="true"
+    init-method="init" >
+     <property name="searchService"><ref bean="org.sakaiproject.search.api.SearchService"/></property>
+     <property name="searchIndexBuilder"><ref bean="org.sakaiproject.search.api.SearchIndexBuilder" /></property>
+     <property name="serverConfigurationService"><ref bean="org.sakaiproject.component.api.ServerConfigurationService"/></property>
+	 <property name="toolName" ><value>blog</value></property>
+	<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker"/>
+	<property name="entryLogic" ref="org.sakaiproject.blogwow.logic.EntryLogic"/>
+	<property name="blogLogic" ref="org.sakaiproject.blogwow.logic.BlogLogic"/>
+	<property name="addEvents" >
+      <list>
+        <value>blog.entry.saved</value>
+      </list>
+    </property>
+   <property name="removeEvents" >
+      <list>
+        <value>blog.entry.removed</value>
+      </list>
+    </property>
+  </bean>
+
 </beans>

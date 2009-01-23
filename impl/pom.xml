@@ -43,6 +43,14 @@
          <groupId>org.sakaiproject.kernel</groupId>
          <artifactId>sakai-kernel-api</artifactId>
       </dependency>
+       <dependency>
+         <groupId>org.sakaiproject.kernel</groupId>
+         <artifactId>sakai-component-manager</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.sakaiproject.kernel</groupId>
+         <artifactId>sakai-kernel-util</artifactId>
+      </dependency>
       <dependency>
          <groupId>org.sakaiproject.entitybroker</groupId>
          <artifactId>entitybroker-api</artifactId>
@@ -131,6 +139,12 @@
          <artifactId>easymock</artifactId>
          <version>1.2_Java1.3</version>
       </dependency>
+	<dependency>
+		<groupId>org.sakaiproject</groupId>
+		<artifactId>sakai-blogwow-api</artifactId>
+		<version>0.9.9-SNAPSHOT</version>
+	</dependency>
+      
 
    </dependencies>
 
