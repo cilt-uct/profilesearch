@@ -11,8 +11,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.blogwow.constants.BlogConstants;
 import org.sakaiproject.blogwow.logic.BlogLogic;
+import org.sakaiproject.blogwow.logic.CommentLogic;
 import org.sakaiproject.blogwow.logic.EntryLogic;
 import org.sakaiproject.blogwow.model.BlogWowBlog;
+import org.sakaiproject.blogwow.model.BlogWowComment;
 import org.sakaiproject.blogwow.model.BlogWowEntry;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.EntityBroker;
@@ -24,8 +26,8 @@ import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.util.FormattedText;
 
-public class BlogwowEntryEntityContentProducer implements EntityContentProducer {
-	private static Log log = LogFactory.getLog(BlogwowEntryEntityContentProducer.class);
+public class BlogCommentEntityContentProducer implements EntityContentProducer {
+	private static Log log = LogFactory.getLog(BlogCommentEntityContentProducer.class);
 	
 	private BlogLogic blogLogic;
 	public void setBlogLogic(BlogLogic blogLogic) {
@@ -98,7 +100,13 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 		this.serverConfigurationService = serverConfigurationService;
 	}
 	
+	private CommentLogic commentLogic;
 	
+	public void setCommentLogic(CommentLogic commentLogic) {
+		this.commentLogic = commentLogic;
+	}
+
+
 	private EntityBroker entityBroker;
 	public void setEntityBroker(EntityBroker eb) {
 		this.entityBroker = eb;
@@ -174,12 +182,18 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 		BlogWowBlog blog = blogLogic.getBlogById(id);
 		return blog;
 	}
+	
+	private BlogWowComment getBlogCommentByRef(String ref) {
+		String id = EntityReference.getIdFromRef(ref);
+		BlogWowComment comment = commentLogic.getCommentById(id, null);
+		return comment;
+	}
+	
 	public String getContent(String reference) {
 		log.debug("getContent(" + reference);
-		BlogWowEntry entry = getEntryByref(reference);
+		BlogWowComment comment = getBlogCommentByRef(reference);
 		StringBuilder sb = new StringBuilder();
-		sb.append(" Title: " + entry.getTitle());
-		sb.append(" Body: " + FormattedText.convertFormattedTextToPlaintext(entry.getText()));
+		sb.append(" Body: " + FormattedText.convertFormattedTextToPlaintext(comment.getText()));
 		log.debug("adding text: " + sb.toString());
 		return sb.toString();
 	}
@@ -225,9 +239,17 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 		List<BlogWowEntry> entries = entryLogic.getAllVisibleEntries(idArray, null, null, true, 0, 0);
 		for (int i =0; i < entries.size(); i++) {
 			BlogWowEntry ent = entries.get(i);
-			String ref = "/blog-entry/" + ent.getId();
-			log.debug("adding " + ref);
-			ret.add(ref);
+			
+			List<BlogWowComment> comments = commentLogic.getComments(ent.getId(), null, true, 0, 0);
+			for (int q = 0; q < comments.size(); q++) {
+				BlogWowComment comment = comments.get(q);
+				String ref = "/blog-comment/" + comment.getId();
+				log.debug("adding " + ref);
+				ret.add(ref);
+				
+			}
+				
+			
 			
 		}
 		
@@ -235,16 +257,17 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 	}
 
 	public String getSiteId(String reference) {
-		BlogWowEntry entry = getEntryByref(reference);
-		if (entry == null)
+		BlogWowComment comment = getBlogCommentByRef(reference);
+		if (comment == null)
 			return null;
 		
+		BlogWowEntry entry =  comment.getEntry();
 		String context = entry.getBlog().getLocation();
 		return EntityReference.getIdFromRef(context);
 	}
 
 	public String getSubType(String ref) {
-		return "blog-entry";
+		return "blog-comment";
 	}
 
 	public String getTitle(String reference) {
@@ -263,9 +286,12 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 	}
 
 	public String getUrl(String reference) {
-		BlogWowEntry entry = getEntryByref(reference);
-		if (entry == null)
+		BlogWowComment comment = getBlogCommentByRef(reference);
+		if (comment == null)
 			return null;
+		//for now we need to link to the blog
+		BlogWowEntry entry = comment.getEntry();
+		
 		return "/direct/blog-entry/" + entry.getId();
 	}
 
@@ -274,9 +300,11 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 	}
 
 	public boolean isForIndex(String reference) {
-		BlogWowEntry entry = getEntryByref(reference);
-		if (entry == null)
+		BlogWowComment comment = getBlogCommentByRef(reference);
+		if (comment == null)
 			return false;
+		BlogWowEntry entry = comment.getEntry();
+		
 		if (BlogConstants.PRIVACY_PRIVATE.equals(entry.getPrivacySetting()))
 			return false;
 				
@@ -287,7 +315,7 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 	public boolean matches(String reference) {
 		String prefix = EntityReference.getPrefix(reference);
 		log.debug("checkin if " + prefix + " matches");
-		if ("blog-entry".equals(prefix))
+		if ("blog-comment".equals(prefix))
 			return true;
 		
 		return false;
