@@ -22,6 +22,8 @@ import org.sakaiproject.search.api.EntityContentProducer;
 import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
+import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.util.FormattedText;
 
 public class BlogwowEntryEntityContentProducer implements EntityContentProducer {
@@ -104,6 +106,13 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 		this.entityBroker = eb;
 	}
 	
+	
+	private SessionManager sessionManager;
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
+
+
 	public void init()
 	{
 
@@ -164,14 +173,27 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 		return null;
 	}
 	
+	
 	private BlogWowEntry getEntryByref(String ref) {
+	
 		String id = EntityReference.getIdFromRef(ref);
-		return entryLogic.getEntryById(id, null);
+		Session session = sessionManager.getCurrentSession();
+		session.setUserId("admin");
+		session.setUserEid("admin");
+		BlogWowEntry ret =  entryLogic.getEntryById(id, null);
+		session.setUserId(null);
+		session.setUserEid(null);
+		return ret;
 	}
 
 	private BlogWowBlog getBlogByRef(String ref) {
 		String id = EntityReference.getIdFromRef(ref);
+		Session session = sessionManager.getCurrentSession();
+		session.setUserId("admin");
+		session.setUserEid("admin");
 		BlogWowBlog blog = blogLogic.getBlogById(id);
+		session.setUserId(null);
+		session.setUserEid(null);
 		return blog;
 	}
 	public String getContent(String reference) {
@@ -218,11 +240,14 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 		for (int i = 0; i < blogs.size(); i++) {
 			BlogWowBlog blog = blogs.get(i);
 			String id = blog.getId();
+			log.debug("adding to id list: " + id);
 			ids.add(id);
 		}
+		log.debug("finished with id list ");
 		String[] idArray = ids.toArray(new String[ids.size()]);
 		List<String> ret = new ArrayList<String>();
-		List<BlogWowEntry> entries = entryLogic.getAllVisibleEntries(idArray, null, null, true, 0, 0);
+		log.debug("getting entries for all blogs");
+		List<BlogWowEntry> entries = entryLogic.getAllVisibleEntries(idArray, "admin", null, true, 0, 0);
 		for (int i =0; i < entries.size(); i++) {
 			BlogWowEntry ent = entries.get(i);
 			String ref = "/blog-entry/" + ent.getId();
@@ -230,6 +255,7 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 			ret.add(ref);
 			
 		}
+		log.debug("found " + ret.size() + " entries");
 		
 		return ret.iterator();
 	}

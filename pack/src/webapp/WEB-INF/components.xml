@@ -37,6 +37,7 @@
 	<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker"/>
 	<property name="entryLogic" ref="org.sakaiproject.blogwow.logic.EntryLogic"/>
 	<property name="blogLogic" ref="org.sakaiproject.blogwow.logic.BlogLogic"/>
+	<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
 	<property name="addEvents" >
       <list>
         <value>blog.entry.saved</value>
