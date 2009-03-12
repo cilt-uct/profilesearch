@@ -26,6 +26,7 @@
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 </bean>
 
+<!-- 
    <bean id="blogEntryAdaptor" 
     class="org.sakaiproject.profilesearch.logic.impl.BlogwowEntryEntityContentProducer"
     singleton="true"
@@ -73,7 +74,7 @@
       </list>
     </property>
   </bean>
-  
+   -->
     
   
   
