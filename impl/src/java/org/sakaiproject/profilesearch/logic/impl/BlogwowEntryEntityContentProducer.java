@@ -178,22 +178,14 @@ public class BlogwowEntryEntityContentProducer implements EntityContentProducer 
 	
 		String id = EntityReference.getIdFromRef(ref);
 		Session session = sessionManager.getCurrentSession();
-		session.setUserId("admin");
-		session.setUserEid("admin");
 		BlogWowEntry ret =  entryLogic.getEntryById(id, null);
-		session.setUserId(null);
-		session.setUserEid(null);
 		return ret;
 	}
 
 	private BlogWowBlog getBlogByRef(String ref) {
 		String id = EntityReference.getIdFromRef(ref);
 		Session session = sessionManager.getCurrentSession();
-		session.setUserId("admin");
-		session.setUserEid("admin");
 		BlogWowBlog blog = blogLogic.getBlogById(id);
-		session.setUserId(null);
-		session.setUserEid(null);
 		return blog;
 	}
 	public String getContent(String reference) {
