@@ -26,6 +26,26 @@
 			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
 </bean>
 
+<bean id="commerceOfferRestCommand"
+		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
+		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
+		<property name="toolKey" value="sms" />
+		<property name="commands">
+			<list>
+                <!-- REST command handler -->
+                <bean id="offer1" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
+                    <property name="commandKey" value="offer"/>
+                    <property name="enabled" value="true"/>
+                    <property name="helpMessage" value="Usage: offer studentnumber yes/no"/>
+                    <property name="requiresSiteId" value="true"/>
+                    <property name="restUrl" value="https://vula.uct.ac.za/linktool/smsoffer.php"/>
+                    <property name="visible" value="false"/>
+                </bean>
+        	</list>
+		</property>
+	</bean>	
+
+
 <!-- 
    <bean id="blogEntryAdaptor" 
     class="org.sakaiproject.profilesearch.logic.impl.BlogwowEntryEntityContentProducer"
