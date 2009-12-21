@@ -34,7 +34,7 @@
 			<list>
                 <!-- REST command handler -->
                 <bean id="offer1" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
-                    <property name="commandKey" value="offer"/>
+                    <property name="commandKey" value="OFFER"/>
                     <property name="enabled" value="true"/>
                     <property name="helpMessage" value="Usage: offer studentnumber yes/no"/>
                     <property name="requiresSiteId" value="false"/>
