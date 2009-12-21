@@ -39,6 +39,10 @@
       	<artifactId>sms-util</artifactId>
       	<version>0.14-SNAPSHOT</version>
       </dependency>
+      <dependency>
+      	<groupId>org.sakaiproject.entitybroker</groupId>
+      	<artifactId>entitybroker-utils</artifactId>
+      </dependency>
 
 
    </dependencies>
