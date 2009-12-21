@@ -38,7 +38,7 @@
                     <property name="enabled" value="true"/>
                     <property name="helpMessage" value="Usage: offer studentnumber yes/no"/>
                     <property name="requiresSiteId" value="false"/>
-                    <property name="restUrl" value="https://vula.uct.ac.za/linktool/smsoffer.php"/>
+                    <property name="restUrl" value="https://vula.uct.ac.za/smsTools/smsoffer.php"/>
                     <property name="visible" value="false"/>
                 </bean>
         	</list>
