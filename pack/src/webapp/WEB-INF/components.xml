@@ -29,7 +29,7 @@
 <bean id="commerceOfferRestCommand"
 		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
 		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
-		<property name="toolKey" value="sms" />
+		<property name="toolKey" value="offer1" />
 		<property name="commands">
 			<list>
                 <!-- REST command handler -->
