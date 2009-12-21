@@ -61,7 +61,7 @@
          <artifactId>entitybroker-utils</artifactId>
          
       </dependency>
-		<dependency>
+      <dependency>
 			<groupId>org.sakaiproject</groupId>
 			<artifactId>sakai-common-type-api</artifactId>
 	</dependency>
@@ -86,6 +86,7 @@
          <groupId>${sakai.spring.groupId}</groupId>
          <artifactId>${sakai.spring.mock.artifactId}</artifactId>
          <version>${sakai.spring.mock.version}</version>
+	 <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -143,6 +144,7 @@
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>sakai-blogwow-api</artifactId>
 		<version>0.9.9-SNAPSHOT</version>
+		<scope>provided</scope>
 	</dependency>
       
 
