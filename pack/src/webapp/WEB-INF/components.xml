@@ -49,7 +49,7 @@
 <bean id="dfaq1RestCommand"
 		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
 		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
-		<property name="toolKey" value="offer1" />
+		<property name="toolKey" value="edn1" />
 		<property name="commands">
 			<list>
                 <bean id="dfaq1" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
@@ -68,7 +68,7 @@
 	<bean id="dfaq2RestCommand"
 		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
 		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
-		<property name="toolKey" value="offer1" />
+		<property name="toolKey" value="end2" />
 		<property name="commands">
 			<list>
                 <bean id="dfaq2" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
