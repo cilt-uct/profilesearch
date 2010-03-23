@@ -53,7 +53,7 @@
 		<property name="commands">
 			<list>
                 <bean id="dfaq1" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
-                    <property name="commandKey" value="vnb"/>
+                    <property name="commandKey" value="VNB"/>
                     <property name="enabled" value="true"/>
                     <property name="helpMessage" value="Usage: vnb sitename add your text here"/>
                     <property name="requiresSiteId" value="false"/>
@@ -72,7 +72,7 @@
 		<property name="commands">
 			<list>
                 <bean id="dfaq2" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
-                    <property name="commandKey" value="gthot"/>
+                    <property name="commandKey" value="GTHOT"/>
                     <property name="enabled" value="true"/>
                     <property name="helpMessage" value="Usage: gthot sitename add your text here"/>
                     <property name="requiresSiteId" value="false"/>
