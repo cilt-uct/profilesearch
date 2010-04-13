@@ -46,42 +46,7 @@
 	</bean>	
  -->
 
-<bean id="dfaq1RestCommand"
-		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
-		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
-		<property name="toolKey" value="edn1" />
-		<property name="commands">
-			<list>
-                <bean id="dfaq1" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
-                    <property name="commandKey" value="VNB"/>
-                    <property name="enabled" value="true"/>
-                    <property name="helpMessage" value="Usage: vnb sitename add your text here"/>
-                    <property name="requiresSiteId" value="false"/>
-                    <property name="restUrl" value="http://dfaq.uct.ac.za/edn6099/vnb.php"/>
-                    <property name="visible" value="false"/>
-                </bean>
-        	</list>
-		</property>
-	</bean>
-	
-	
-	<bean id="dfaq2RestCommand"
-		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
-		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
-		<property name="toolKey" value="end2" />
-		<property name="commands">
-			<list>
-                <bean id="dfaq2" class="org.sakaiproject.sms.logic.command.SmsRestCommand">
-                    <property name="commandKey" value="GTHOT"/>
-                    <property name="enabled" value="true"/>
-                    <property name="helpMessage" value="Usage: gthot sitename add your text here"/>
-                    <property name="requiresSiteId" value="false"/>
-                    <property name="restUrl" value="http://dfaq.uct.ac.za/edn6099/gthot.php"/>
-                    <property name="visible" value="false"/>
-                </bean>
-        	</list>
-		</property>
-	</bean>
+
 
 
 
