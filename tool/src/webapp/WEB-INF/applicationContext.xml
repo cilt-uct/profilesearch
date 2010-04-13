@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- documented by aaronz@vt.edu -->
+	<!--
+		RSF version by antranig@caret.cam.ac.uk - some contents moved from
+		"spring-beans.xml"
+	-->
+<beans>
+	<bean id="uctGradebookEntityProvider"
+	parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
+	class=" za.ac.uct.cet.sakai.gradebook.entityproviders.GradebookEntityProvider">
+		<property name="logic" ref="za.ac.uct.cet.sakai.gradebook.entityproviders.logic.ExternalLogic"/>
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	<!-- create an external logic bean which abstracts out the Sakai bits -->
+    <bean id="za.ac.uct.cet.sakai.gradebook.entityproviders.logic.ExternalLogic"
+        class="za.ac.uct.cet.sakai.gradebook.entityproviders.logic.ExternalLogic"
+        init-method="init">
+        <property name="authzGroupService"
+            ref="org.sakaiproject.authz.api.AuthzGroupService" />
+        <property name="emailService"
+            ref="org.sakaiproject.email.api.EmailService" />
+        <property name="functionManager" ref="org.sakaiproject.authz.api.FunctionManager" />
+        <property name="gradebookService" ref="org.sakaiproject.service.gradebook.GradebookService" />
+        <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+        <property name="serverConfigurationService" 
+            ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userDirectoryService"
+            ref="org.sakaiproject.user.api.UserDirectoryService" />
+    </bean>
+	
+	
+	
+	
+	
+		<!--
+		Spring messageSource replaces JSF message-bundle from faces-config.xml
+	-->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename"
+			value="classpath:org/sakaiproject/poll/bundle/Messages" />
+		<property name="cacheSeconds" value="10" />
+	</bean>
+ 
+</beans>
