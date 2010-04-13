@@ -19,10 +19,10 @@
    </properties>
 
   <parent>
-    <artifactId>base</artifactId>
+    <artifactId>master</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.6-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <version>2.6.1</version>
+    <relativePath>../master/pom.xml</relativePath>
   </parent>
 
    <!-- RSF (CARET) maven 2 repository -->
@@ -38,7 +38,7 @@
       <!--  <module>api</module>-->
       <module>impl</module>
       <module>pack</module>
-      <!--<module>tool</module>-->
+      <module>tool</module>
    </modules>
 
 </project>

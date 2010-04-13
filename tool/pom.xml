@@ -22,7 +22,7 @@
    </parent>
 
    <properties>
-      <rsfutil.version>0.7.2RC1</rsfutil.version>
+      <rsfutil.version>0.7.4</rsfutil.version>
       <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
       <deploy.webappname>Profilesearch</deploy.webappname>
       <appserver.id>${sakai.appserver.id}</appserver.id>
@@ -38,12 +38,16 @@
          <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
          <type>jar</type>
       </dependency>
-
+      <dependency>
+         <groupId>uk.org.ponder.rsfutil</groupId>
+         <artifactId>rsfutil</artifactId>
+         <version>${rsfutil.version}</version>
+         <type>jar</type>
+      </dependency>
       <!-- apache commons logging -->
       <dependency>
          <groupId>commons-logging</groupId>
          <artifactId>commons-logging</artifactId>
-         <version>1.1</version>
       </dependency>
 
    </dependencies>
