@@ -68,7 +68,7 @@
 	<dependency>
 	<groupId>org.sakaiproject.search</groupId>
 	<artifactId>search-api</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>11.2-sakai26-beta02</version>
 	</dependency>
       <dependency>
          <groupId>org.sakaiproject</groupId>
