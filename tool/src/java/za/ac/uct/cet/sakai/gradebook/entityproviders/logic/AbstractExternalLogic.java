@@ -530,8 +530,8 @@ public abstract class AbstractExternalLogic {
         // verify permissions
         String userId = getCurrentUserId();
         if (userId == null 
-                || ! siteService.allowUpdateSite(siteId) 
-                || ! siteService.allowViewRoster(siteId) ) {
+                || ! securityService.unlock("gradebook.gradeAll", siteService.siteReference(siteId)) 
+                 ) {
             throw new SecurityException("User ("+userId+") cannot access gradebook in site ("+siteId+")");
         }
         Gradebook gb = new Gradebook(gbID);
