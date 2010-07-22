@@ -3,10 +3,7 @@
 <registration>
 	<tool id="sakai.profilesearch"
 		title="ProfileSearch"
-		description="ProfileSearch created by Sakai App Builder Plugin">
-		<category name="course" />
-		<category name="project" />
-		<!-- <category name="myworkspace" /> -->
-		<!-- <category name="sakai.admin" /> -->
+		description="ProfileSearch">
+
 	</tool>	
 </registration>
