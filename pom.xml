@@ -19,20 +19,51 @@
    </properties>
 
   <parent>
-    <artifactId>master</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.7-SNAPSHOT</version>
-    <relativePath>../master/pom.xml</relativePath>
-  </parent>
+    <artifactId>sakai-commons-tool</artifactId>
+    <groupId>org.sakaiproject.purepoms</groupId>
+    <version>2.7.10</version>
+ </parent>
 
-   <!-- RSF (CARET) maven 2 repository -->
-   <repositories>
-      <repository>
-         <id>CARET-Maven2</id>
-         <name>CARET Maven 2 Repository</name>
-         <url>http://www2.caret.cam.ac.uk/maven2</url>
-      </repository>
-   </repositories>
+     <repositories>
+        <repository>
+            <id>sakai-maven2</id>
+            <name>Sakai Maven Repository</name>
+            <layout>default</layout>
+            <url>http://source.sakaiproject.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sakai-maven2-snapshots</id>
+            <name>Sakai Maven Repo Snapshots</name>
+            <layout>default</layout>
+            <url>http://source.sakaiproject.org/maven2-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>default</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
 
    <modules>
       <!--  <module>api</module>-->
