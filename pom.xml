@@ -19,7 +19,7 @@
    </properties>
 
   <parent>
-    <artifactId>sakai-commons-tool</artifactId>
+    <artifactId>sakai-edu-tool</artifactId>
     <groupId>org.sakaiproject.purepoms</groupId>
     <version>2.7.10</version>
  </parent>
