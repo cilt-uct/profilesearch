@@ -100,6 +100,34 @@
   </bean>
    -->
     
+  <!--  search indexer -->
+<bean id="sakaiPersonAdaptor" 
+    class="org.sakaiproject.component.common.entity.SakaiPersonContentProducer"
+    singleton="true"
+    init-method="init" >
+    <property name="sakaiPersonManager" >
+    	<ref bean="org.sakaiproject.api.common.edu.person.SakaiPersonManager"/>
+    </property>
+    <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+     <property name="searchService"><ref bean="org.sakaiproject.search.api.SearchService"/></property>
+     <property name="searchIndexBuilder"><ref bean="org.sakaiproject.search.api.SearchIndexBuilder" /></property>
+     <property name="serverConfigurationService"><ref bean="org.sakaiproject.component.api.ServerConfigurationService"/></property>
+	 <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+	 <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"/>  
+	 <property name="toolName" ><value>profile</value></property>
+	 <property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker"/>
+	 <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+    <property name="addEvents" >
+      <list>
+        <value>profile.new</value>
+        <value>profile.update</value>
+      </list>
+    </property>
+   <property name="removeEvents" >
+      <list>
+        <value>profile.delete</value>
+      </list>
+    </property>
   
   
 
