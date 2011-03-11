@@ -1,3 +1,24 @@
+/**********************************************************************************
+ * $URL$
+ * $Id$
+ ***********************************************************************************
+ *
+ * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ **********************************************************************************/
+
 package org.sakaiproject.profilesearch.logic.impl;
 
 import java.io.Reader;
@@ -12,17 +33,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
-import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.entitybroker.DeveloperHelperService;
-import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.search.api.EntityContentProducer;
 import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
-import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
@@ -40,12 +57,6 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	// runtime dependency
 	private List<String> removeEvents = null;
 	
-	
-	private EntityBroker entityBroker;
-	public void setEntityBroker(EntityBroker eb) {
-		this.entityBroker = eb;
-	}
-	
 	private SakaiPersonManager spm;
 	public void setSakaiPersonManager(SakaiPersonManager spm) {
 		this.spm = spm;
@@ -58,23 +69,6 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		this.serverConfigurationService = serverConfigurationService;
 	}
 	
-	private SiteService siteService;
-	
-	public void setSiteService(SiteService siteService) {
-		this.siteService = siteService;
-	}
-
-	private AuthzGroupService authzGroupService;
-	
-	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
-		this.authzGroupService = authzGroupService;
-	}
-	
-	private DeveloperHelperService developerHelperService;
-	public void setDeveloperHelperService(
-			DeveloperHelperService developerHelperService) {
-		this.developerHelperService = developerHelperService;
-	}
 
 	private UserDirectoryService userDirectoryService;
 	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
@@ -85,13 +79,13 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	 * @param addEvents
 	 *        The addEvents to set.
 	 */
-	public void setAddEvents(List addEvents)
+	public void setAddEvents(List<String> addEvents)
 	{
 		this.addEvents = addEvents;
 	}
 
 	
-	public void setRemoveEvents(List removeEvents) {
+	public void setRemoveEvents(List<String> removeEvents) {
 		this.removeEvents = removeEvents;
 	}
 
@@ -133,12 +127,12 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		if ( "true".equals(serverConfigurationService.getString(
 				"search.enable", "false")))
 		{
-			for (Iterator i = addEvents.iterator(); i.hasNext();)
+			for (Iterator<String> i = addEvents.iterator(); i.hasNext();)
 			{
 				searchService.registerFunction((String) i.next());
 			}
 			
-			for (Iterator i = removeEvents.iterator(); i.hasNext();)
+			for (Iterator<String> i = removeEvents.iterator(); i.hasNext();)
 			{
 				searchService.registerFunction((String) i.next());
 			}
@@ -176,7 +170,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return new StringReader(getContent(reference));
 	}
 
-	public Map getCustomProperties(String ref) {
+	public Map<String, ?> getCustomProperties(String ref) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -193,7 +187,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	}
 
 	
-	public List getSiteContent(String context) {
+	private List<String> getSiteContent(String context) {
 
 		log.debug("getting SakaiPersons in " + context);
 		List<String> all = new ArrayList<String>();
@@ -202,7 +196,6 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 			//get the members of the site
 
 			//context is a site id
-			String ref = siteService.siteReference(context);
 			int first = 1;
 			int last = 500;
 			int increment = 500;
@@ -236,7 +229,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 		return all;
 	}
 
-	public Iterator getSiteContentIterator(String context) {
+	public Iterator<String> getSiteContentIterator(String context) {
 		
 		return getSiteContent(context).iterator();
 	}
@@ -250,7 +243,6 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	
 	
 	public String getType(String reference) {
-		EntityReference ref = new EntityReference(reference);
 		String ret = ""; // ref.getIdFromRefByKey("ref", "type");
 		return ret;
 	}
@@ -306,7 +298,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 				
 				//we don't add inactive types
 				if ("Inactive".equals(user.getType()) || "inactiveStaff".equals(user.getType()) || "inactiveStaff".equals(user.getType())) {
-					log.info("we won't add user of " + user.getType() + " type");
+					log.debug("we won't add user of " + user.getType() + " type");
 					return false;
 				}
 			}
@@ -343,7 +335,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 	public Integer getAction(Event event) {
 		String evt = event.getEvent();
 		if (evt == null) return SearchBuilderItem.ACTION_UNKNOWN;
-		for (Iterator i = addEvents.iterator(); i.hasNext();)
+		for (Iterator<String> i = addEvents.iterator(); i.hasNext();)
 		{
 			String match = (String) i.next();
 			if (evt.equals(match))
@@ -351,7 +343,7 @@ public class SakaiPersonContentProducer implements EntityContentProducer {
 				return SearchBuilderItem.ACTION_ADD;
 			}
 		}
-		for (Iterator i = removeEvents.iterator(); i.hasNext();)
+		for (Iterator<String> i = removeEvents.iterator(); i.hasNext();)
 		{
 			String match = (String) i.next();
 			if (evt.equals(match))
