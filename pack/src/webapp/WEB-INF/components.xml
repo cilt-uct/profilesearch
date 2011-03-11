@@ -102,7 +102,7 @@
     
   <!--  search indexer -->
 <bean id="sakaiPersonAdaptor" 
-    class="org.sakaiproject.component.common.entity.SakaiPersonContentProducer"
+    class="org.sakaiproject.profilesearch.logic.impl.SakaiPersonContentProducer"
     singleton="true"
     init-method="init" >
     <property name="sakaiPersonManager" >
