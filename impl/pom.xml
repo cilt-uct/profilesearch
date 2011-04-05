@@ -79,10 +79,6 @@
 			<groupId>org.sakaiproject.common</groupId>
 			<artifactId>sakai-common-manager-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.sakaiproject.kernel</groupId>
-			<artifactId>sakai-component-manager</artifactId>
-		</dependency>
 		<!-- testing dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -149,6 +145,13 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
