@@ -136,7 +136,7 @@ public class ServerHealthCheck  {
 				DateTime returnDate = new DateTime(timeInfo.getReturnTime());
 				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 				String strDate = fmt.print(returnDate);
-				log.info("Offset is to " + ntpHost +" is: " + timeInfo.getOffset() + "ms ntp host time is: " + strDate);
+				log.info("Offset to " + ntpHost +" is: " + timeInfo.getOffset() + "ms ntp host time is: " + strDate);
 				double offset = timeInfo.getOffset().longValue()/1000D;
 				if (offset > seconds || offset < (seconds * -1)) {
 					log.error("Drift is from " + ntpHost + " is: "  + offset + "exceeding threashold of " + threshold);
