@@ -134,13 +134,12 @@ public class ServerHealthCheck  {
 				TimeInfo timeInfo = client.getTime(address);
 				timeInfo.computeDetails();
 				DateTime returnDate = new DateTime(timeInfo.getReturnTime());
-				//log.info("Offset is: " + timeInfo.getOffset().toString());
 				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 				String strDate = fmt.print(returnDate);
-				log.debug("Offset is to " + ntpHost +" is: " + timeInfo.getDelay() + " ntp host time is: " + strDate);
-				long offset = timeInfo.getDelay().longValue();
+				log.info("Offset is to " + ntpHost +" is: " + timeInfo.getOffset() + "ms ntp host time is: " + strDate);
+				double offset = timeInfo.getOffset().longValue()/1000D;
 				if (offset > seconds || offset < (seconds * -1)) {
-					log.error("Drift is from " + ntpHost + " is: "  + offset + "exceepting threashold of " + threshold);
+					log.error("Drift is from " + ntpHost + " is: "  + offset + "exceeding threashold of " + threshold);
 					String nodeId = serverConfigurationService.getServerId();
 					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " with a value of: " + offset + " from: " + ntpHost;
 					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server clock alert", 
