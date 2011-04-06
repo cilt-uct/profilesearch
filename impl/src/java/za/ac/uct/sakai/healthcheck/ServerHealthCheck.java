@@ -109,7 +109,7 @@ public class ServerHealthCheck  {
 			if (ret.size() > 0) {
 				String val = ret.get(0);
 				Integer intVal = Integer.valueOf(val);
-				log.debug("got a drift of: " + intVal.toString());
+				log.info("got a drift of: " + intVal.toString());
 				if (intVal.intValue() > seconds || intVal.intValue() < (seconds * -1)) {
 					log.error("Drift is " + intVal + "exceepting threashold of " + threshold);
 					String nodeId = serverConfigurationService.getServerId();
