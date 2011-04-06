@@ -129,7 +129,7 @@ public class ServerHealthCheck  {
 			log.debug("checkNTP()");
 			NTPUDPClient client = new NTPUDPClient();
 			try {
-				String ntpHost = "137.158.128.10";
+				String ntpHost = "ntp2.uct.ac.za";
 				InetAddress address = InetAddress.getByName(ntpHost);
 				TimeInfo timeInfo = client.getTime(address);
 				timeInfo.computeDetails();
