@@ -111,7 +111,7 @@ public class ServerHealthCheck  {
 				Integer intVal = Integer.valueOf(val);
 				log.info("got a drift of: " + intVal.toString());
 				if (intVal.intValue() > seconds || intVal.intValue() < (seconds * -1)) {
-					log.error("Drift is " + intVal + "exceepting threashold of " + threshold);
+					log.error("Drift is " + intVal + " exceepting threashold of " + threshold);
 					String nodeId = serverConfigurationService.getServerId();
 					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " with a value of: " + intVal.intValue();
 					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server clock alert", 
@@ -139,7 +139,7 @@ public class ServerHealthCheck  {
 				log.info("Offset to " + ntpHost +" is: " + timeInfo.getOffset() + "ms ntp host time is: " + strDate);
 				double offset = timeInfo.getOffset().longValue()/1000D;
 				if (offset > seconds || offset < (seconds * -1)) {
-					log.error("Drift is from " + ntpHost + " is: "  + offset + "exceeding threashold of " + threshold);
+					log.error("Drift is from " + ntpHost + " is: "  + offset + " exceeding threashold of " + threshold);
 					String nodeId = serverConfigurationService.getServerId();
 					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " with a value of: " + offset + " from: " + ntpHost;
 					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server clock alert", 
