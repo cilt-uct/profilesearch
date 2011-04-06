@@ -1,9 +1,14 @@
 package za.ac.uct.sakai.healthcheck;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.net.ntp.NTPUDPClient;
+import org.apache.commons.net.ntp.TimeInfo;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -77,7 +82,10 @@ public class ServerHealthCheck  {
 			while (!stopThread) {
 				try {
 					checkServerHealth();
+					checkNTP();
 					Thread.sleep(5*60*1000);
+					//for testing
+					//Thread.sleep(10*1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -115,7 +123,40 @@ public class ServerHealthCheck  {
 				log.warn("query returned no result");
 			}
 		}
-
+		
+		
+		private void checkNTP() {
+			log.debug("checkNTP()");
+			NTPUDPClient client = new NTPUDPClient();
+			try {
+				String ntpHost = "ntp.uct.ac.za";
+				InetAddress address = InetAddress.getByName(ntpHost);
+				TimeInfo timeInfo = client.getTime(address);
+				timeInfo.computeDetails();
+				DateTime returnDate = new DateTime(timeInfo.getReturnTime());
+				//log.info("Offset is: " + timeInfo.getOffset().toString());
+				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+				String strDate = fmt.print(returnDate);
+				log.debug("Offset is to " + ntpHost +" is: " + timeInfo.getDelay() + " ntp host time is: " + strDate);
+				long offset = timeInfo.getDelay().longValue();
+				if (offset > seconds || offset < (seconds * -1)) {
+					log.error("Drift is from " + ntpHost + " is: "  + offset + "exceepting threashold of " + threshold);
+					String nodeId = serverConfigurationService.getServerId();
+					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " with a value of: " + offset + " from: " + ntpHost;
+					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server clock alert", 
+							body, null, null, null);
+				}
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally {
+				client.close();
+			}
+		}
 	}
 
 }
