@@ -79,13 +79,17 @@ public class ServerHealthCheck  {
 		}
 		
 		public void run() {
+			int checkPeriod = 5*60*1000;
 			while (!stopThread) {
 				try {
-					checkServerHealth();
-					checkNTP();
-					Thread.sleep(5*60*1000);
-					//for testing
-					//Thread.sleep(10*1000);
+					long nextCheck = 0L;
+					if (System.currentTimeMillis() >= nextCheck) {
+						checkServerHealth();
+						checkNTP();
+						nextCheck = System.currentTimeMillis() + checkPeriod;
+					}
+					Thread.sleep(5000);
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
