@@ -3,6 +3,7 @@ package za.ac.uct.sakai.healthcheck;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -67,10 +68,6 @@ public class ServerHealthCheck  {
 		 */
 		private int threshold =  30;
 		
-		public CheckRunner() {
-			thread = new Thread(this);
-			thread.start();
-		}
 		
 		public CheckRunner(int threshold) {
 			thread = new Thread(this);
@@ -80,13 +77,16 @@ public class ServerHealthCheck  {
 		
 		public void run() {
 			int checkPeriod = 5*60*1000;
+			long nextCheck = System.currentTimeMillis();
 			while (!stopThread) {
 				try {
-					long nextCheck = 0L;
 					if (System.currentTimeMillis() >= nextCheck) {
 						checkServerHealth();
 						checkNTP();
 						nextCheck = System.currentTimeMillis() + checkPeriod;
+						if (log.isDebugEnabled()) {
+							log.debug("next check at " + new Date(nextCheck));
+						}
 					}
 					Thread.sleep(5000);
 					
@@ -102,6 +102,7 @@ public class ServerHealthCheck  {
 			stopThread = val;
 		}
 		
+		@SuppressWarnings("unchecked")
 		private void checkServerHealth() {
 			DateTime dt = new DateTime();
 			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
