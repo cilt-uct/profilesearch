@@ -205,6 +205,7 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		}
 		
 		SakaiPerson sakaiperson = null;
+		//not implemented in profile classic or profileWOW
 		boolean wantsThumbnail = "thumb".equals(view.getPathSegment(3)) ? true : false;
 		
 		//optional siteid
@@ -214,16 +215,18 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		}
 		
 		//get the SP object
-		sakaiperson = sakaiPersonManager.getSakaiPerson(uuid, (sakaiPersonManager.getSystemMutableType()));
+		log.info("looking for SakaiUser: " + uuid);
+		sakaiperson = sakaiPersonManager.getSakaiPerson(uuid, (sakaiPersonManager.getUserMutableType()));
 		
 		if(sakaiperson == null) {
 			throw new EntityNotFoundException("No profile image for " + ref.getId(), ref.getReference());
 		}
-		//TODO - we may need to capture the official photo preffered option
+		//TODO - we may need to capture the official photo preferred option
 		
 		String url = sakaiperson.getPictureUrl();
 		if(StringUtils.isNotBlank(url)) {
 			try {
+				log.info("found image at: " + url);
 				requestGetter.getResponse().sendRedirect(url);
 			} catch (IOException e) {
 				throw new EntityException("Error redirecting to external image for " + ref.getId() + " : " + e.getMessage(), ref.getReference());
