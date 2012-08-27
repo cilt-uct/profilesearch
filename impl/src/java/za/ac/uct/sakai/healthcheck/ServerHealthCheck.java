@@ -118,8 +118,8 @@ public class ServerHealthCheck  {
 				if (intVal.intValue() > seconds || intVal.intValue() < (seconds * -1)) {
 					log.error("Drift is " + intVal + " exceepting threashold of " + threshold);
 					String nodeId = serverConfigurationService.getServerId();
-					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " with a value of: " + intVal.intValue();
-					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server clock alert", 
+					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " fom db with a value of: " + intVal.intValue();
+					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server-DB clock alert", 
 							body, null, null, null);
 				} else {
 					log.debug("in range : " + intVal.toString() + " threshold: " + seconds);
