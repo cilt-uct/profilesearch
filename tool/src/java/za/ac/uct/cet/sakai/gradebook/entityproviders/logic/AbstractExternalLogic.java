@@ -19,6 +19,7 @@
 package za.ac.uct.cet.sakai.gradebook.entityproviders.logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -399,7 +400,6 @@ public abstract class AbstractExternalLogic {
         return courses;
     }
 
-    @SuppressWarnings("unchecked")
     private List<Site> getInstructorSites() {
         // return a max of 100 sites
         List<Site> instSites = new ArrayList<Site>();
@@ -429,22 +429,7 @@ public abstract class AbstractExternalLogic {
     @SuppressWarnings("unchecked")
     public List<Student> getStudentsForCourse(String siteId) {
         List<Student> students = new ArrayList<Student>();
-        Site site;
-        try {
-            site = siteService.getSite(siteId);
-        } catch (IdUnusedException e1) {
-            throw new IllegalArgumentException("No course found with id (" + siteId + ")");
-        }
-        String siteRef = site.getReference();
-        // use the method gradebook uses internally
-        List<User> studentUsers = securityService.unlockUsers("section.role.student", siteRef);
-        for (User user : studentUsers) {
-            Student s = new Student(user.getId(), user.getEid(), user.getDisplayName(), user.getSortName(), user.getEmail());
-            s.fname = user.getFirstName();
-            s.lname = user.getLastName();
-            students.add(s);
-        }
-        /*** this only works in the post-2.5 gradebook -AZ
+        /*** this only works in the post-2.5 gradebook -AZ */
         // Let the gradebook tell use how it defines the students The gradebookUID is the siteId
         String gbID = siteId;
         if (!gradebookService.isGradebookDefined(gbID)) {
@@ -462,7 +447,6 @@ public abstract class AbstractExternalLogic {
                 log.warn("Undefined user eid (" + eid + ") from site/gb (" + siteId + "): " + e);
             }
         }
-        ***/
         return students;
     }
 
