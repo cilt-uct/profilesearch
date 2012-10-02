@@ -39,6 +39,7 @@ import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.javax.PagingPosition;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CommentDefinition;
+import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
@@ -544,46 +545,25 @@ public abstract class AbstractExternalLogic {
     }
 
     private GradebookItem makeGradebookItemFromAssignment(String gbID, Assignment assignment,
-            Map<String, String> studentUserIds, ArrayList<String> studentIds) {
-        // build up the items listing
-        GradebookItem gbItem = new GradebookItem(gbID, assignment.getName(), assignment
-                .getPoints(), assignment.getDueDate(), assignment.getExternalAppName(),
-                assignment.isReleased());
-        gbItem.id = assignment.getId().toString();
-        /*
-         *  We have to iterate through each student and get the grades out... 
-         *  2.5 gradebook service has problems
-         */
-        for (String studentId : studentIds) {
-            // too expensive: if (gradebookService.getGradeViewFunctionForUserForStudentForItem(gbID, assignment.getId(), studentId) == null) {
-            Double grade = gradebookService.getAssignmentScore(gbID, assignment.getName(),
-                    studentId);
-            if (grade != null) {
-                GradebookItemScore score = new GradebookItemScore(assignment.getId().toString(),
-                        studentId, grade.toString() );
-                score.username = studentUserIds.get(studentId);
-                CommentDefinition cd = gradebookService.getAssignmentScoreComment(gbID, assignment
-                        .getName(), studentId);
-                if (cd != null) {
-                    score.comment = cd.getCommentText();
-                    score.recorded = cd.getDateRecorded();
-                    score.graderUserId = cd.getGraderUid();
-                }
-                gbItem.scores.add(score);
-            }
-        }
-        // This is the post 2.5 way
-        // List<GradeDefinition> grades = gradebookService.getGradesForStudentsForItem(siteId,
-        // assignment.getId(), studentIds);
-        // for (GradeDefinition gd : grades) {
-        // String studId = gd.getStudentUid();
-        // String studEID = studentUserIds.get(studId);
-        // GradebookItemScore score = new GradebookItemScore(assignment.getId().toString(),
-        // studId, gd.getGrade(), studEID, gd.getGraderUid(), gd.getDateRecorded(),
-        // gd.getGradeComment());
-        // gbItem.scores.add(score);
-        // }
-        return gbItem;
+    		Map<String, String> studentUserIds, ArrayList<String> studentIds) {
+    	// build up the items listing
+    	GradebookItem gbItem = new GradebookItem(gbID, assignment.getName(), assignment
+    			.getPoints(), assignment.getDueDate(), assignment.getExternalAppName(),
+    			assignment.isReleased());
+    	gbItem.id = assignment.getId().toString();
+
+    	// This is the post 2.5 way
+    	List<GradeDefinition> grades = gradebookService.getGradesForStudentsForItem(gbID,
+    			assignment.getId(), studentIds);
+    	for (GradeDefinition gd : grades) {
+    		String studId = gd.getStudentUid();
+    		String studEID = studentUserIds.get(studId);
+    		GradebookItemScore score = new GradebookItemScore(assignment.getId().toString(),
+    				studId, gd.getGrade(), studEID, gd.getGraderUid(), gd.getDateRecorded(),
+    				gd.getGradeComment());
+    		gbItem.scores.add(score);
+    	}
+    	return gbItem;
     }
 
     /**
