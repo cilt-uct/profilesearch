@@ -443,7 +443,10 @@ public abstract class AbstractExternalLogic {
         for (String eid : eids) {
             try {
                 User user = userDirectoryService.getUserByEid(eid);
-                students.add(new Student(user.getId(), user.getEid(), user.getDisplayName(), user.getSortName(), user.getEmail()));
+                Student student = new Student(user.getId(), user.getEid(), user.getDisplayName(), user.getSortName(), user.getEmail());
+                student.fname = user.getFirstName();
+                student.lname = user.getLastName();
+                students.add(student);
             } catch (UserNotDefinedException e) {
                 log.warn("Undefined user eid (" + eid + ") from site/gb (" + siteId + "): " + e);
             }
