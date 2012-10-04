@@ -558,9 +558,14 @@ public abstract class AbstractExternalLogic {
     	for (GradeDefinition gd : grades) {
     		String studId = gd.getStudentUid();
     		String studEID = studentUserIds.get(studId);
-    		GradebookItemScore score = new GradebookItemScore(assignment.getId().toString(),
-    				studId, gd.getGrade(), studEID, gd.getGraderUid(), gd.getDateRecorded(),
-    				gd.getGradeComment());
+    		GradebookItemScore score = null;
+    		String grade = gd.getGrade();
+    		//The student may have no grade set
+    		if (grade != null && !"".equals(grade)) {
+    			score = new GradebookItemScore(assignment.getId().toString(),
+    					studId, grade, studEID, gd.getGraderUid(), gd.getDateRecorded(),
+    					gd.getGradeComment());
+    		}
     		gbItem.scores.add(score);
     	}
     	return gbItem;
