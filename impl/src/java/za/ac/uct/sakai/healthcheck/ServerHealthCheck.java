@@ -114,12 +114,12 @@ public class ServerHealthCheck  {
 			if (ret.size() > 0) {
 				String val = ret.get(0);
 				Integer intVal = Integer.valueOf(val);
-				log.debug("got a drift of: " + intVal.toString());
+				log.debug("got a drift of: " + intVal.toString() + " seconds");
 				if (intVal.intValue() > seconds || intVal.intValue() < (seconds * -1)) {
-					log.error("Drift is " + intVal + " exceepting threashold of " + threshold);
+					log.error("Drift is " + intVal + " exceeding threshold of " + threshold + " seconds");
 					String nodeId = serverConfigurationService.getServerId();
-					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " fom db with a value of: " + intVal.intValue();
-					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server-DB clock alert", 
+					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " seconds from db with a value of: " + intVal.intValue() + " seconds";
+					emailService.send("help@vula.uct.ac.za", "alerts@vula.uct.ac.za", "Server-DB clock alert", 
 							body, null, null, null);
 				} else {
 					log.debug("in range : " + intVal.toString() + " threshold: " + seconds);
@@ -134,7 +134,7 @@ public class ServerHealthCheck  {
 			log.debug("checkNTP()");
 			NTPUDPClient client = new NTPUDPClient();
 			try {
-				String ntpHost = "ntp2.uct.ac.za";
+				String ntpHost = "ntp.uct.ac.za";
 				InetAddress address = InetAddress.getByName(ntpHost);
 				TimeInfo timeInfo = client.getTime(address);
 				timeInfo.computeDetails();
@@ -144,10 +144,10 @@ public class ServerHealthCheck  {
 				log.info("Offset to " + ntpHost +" is: " + timeInfo.getOffset() + "ms ntp host time is: " + strDate);
 				double offset = timeInfo.getOffset().longValue()/1000D;
 				if (offset > seconds || offset < (seconds * -1)) {
-					log.error("Drift is from " + ntpHost + " is: "  + offset + " exceeding threashold of " + threshold);
+					log.error("Drift from " + ntpHost + " is: "  + offset + " seconds exceeding threshold of " + threshold + " seconds");
 					String nodeId = serverConfigurationService.getServerId();
-					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " with a value of: " + offset + " from: " + ntpHost;
-					emailService.send("help@vula.uct.ac.za", "help-team@vula.uct.ac.za", "Server clock alert", 
+					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " seconds with a value of: " + offset + " seconds from: " + ntpHost;
+					emailService.send("help@vula.uct.ac.za", "alerts@vula.uct.ac.za", "Server clock alert", 
 							body, null, null, null);
 				}
 			} catch (UnknownHostException e) {
