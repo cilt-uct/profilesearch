@@ -12,16 +12,14 @@
    </organization>
    <inceptionYear>2007</inceptionYear>
    <packaging>pom</packaging>
-   <version>0.1</version>
+   <version>0.2-SNAPSHOT</version>
 
-   <properties>
-      <rsfutil.version>0.7.2</rsfutil.version>
-   </properties>
+
 
   <parent>
     <artifactId>master</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10-SNAPSHOT</version>
  </parent>
 
      <repositories>
