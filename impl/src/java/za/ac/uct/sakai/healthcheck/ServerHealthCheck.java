@@ -55,9 +55,6 @@ public class ServerHealthCheck  {
 		checkRunner.setThreadStop(true);
 	}
 
-
-
-
 	private class CheckRunner implements Runnable {
 
 		private Thread thread;
@@ -84,18 +81,15 @@ public class ServerHealthCheck  {
 						checkServerHealth();
 						checkNTP();
 						nextCheck = System.currentTimeMillis() + checkPeriod;
-						if (log.isDebugEnabled()) {
-							log.debug("next check at " + new Date(nextCheck));
-						}
+						log.info("next check at " + new Date(nextCheck));
 					}
 					Thread.sleep(5000);
-					
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (NumberFormatException e) {
+					log.error("Format exception ", e);
 				}
 			}
-
 		}
 		
 		public void setThreadStop(boolean val) {
@@ -108,21 +102,24 @@ public class ServerHealthCheck  {
 			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 			String strDate = fmt.print(dt);
 			Object[] fields = new Object[]{strDate};
+
+			// This can return a decimal value in mysql 5.7
 			String sql = "select UNIX_TIMESTAMP(?) - UNIX_TIMESTAMP(now())S";
+
 			List<String> ret = sqlService.dbRead(sql, fields, null);
 			int seconds = threshold;
 			if (ret.size() > 0) {
-				String val = ret.get(0);
-				Integer intVal = Integer.valueOf(val);
-				log.debug("got a drift of: " + intVal.toString() + " seconds");
-				if (intVal.intValue() > seconds || intVal.intValue() < (seconds * -1)) {
+				double d = Double.parseDouble(ret.get(0));
+				int intVal = (int) d;
+				log.info("Offset from database timestamp is: " + intVal + " seconds (" + d + ")");
+				if (intVal > seconds || intVal < (seconds * -1)) {
 					log.error("Drift is " + intVal + " exceeding threshold of " + threshold + " seconds");
 					String nodeId = serverConfigurationService.getServerId();
-					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " seconds from db with a value of: " + intVal.intValue() + " seconds";
+					String body = "Server: " + nodeId + " exceeded time drift of " + seconds + " seconds from db with a value of: " + intVal + " seconds";
 					emailService.send("help@vula.uct.ac.za", "alerts@vula.uct.ac.za", "Server-DB clock alert", 
 							body, null, null, null);
 				} else {
-					log.debug("in range : " + intVal.toString() + " threshold: " + seconds);
+					log.debug("in range : " + intVal + " threshold: " + seconds);
 				}
 			} else {
 				log.warn("query returned no result");
@@ -151,10 +148,8 @@ public class ServerHealthCheck  {
 							body, null, null, null);
 				}
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			finally {
@@ -162,5 +157,4 @@ public class ServerHealthCheck  {
 			}
 		}
 	}
-
 }
