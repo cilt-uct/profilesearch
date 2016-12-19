@@ -224,6 +224,10 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		//TODO - we may need to capture the official photo preferred option
 		
 		String url = sakaiperson.getPictureUrl();
+		if (StringUtils.isBlank(url)) {
+			url = "/profilewow-tool/images/noimage.gif";
+		}
+
 		if(StringUtils.isNotBlank(url)) {
 			try {
 				log.info("found image at: " + url);
