@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
+import org.sakaiproject.api.app.profile.ProfileManager;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
@@ -18,6 +19,7 @@ import org.sakaiproject.entitybroker.entityprovider.annotations.EntityCustomActi
 import org.sakaiproject.entitybroker.entityprovider.capabilities.AutoRegisterEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.RESTful;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.RequestAware;
+import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.extension.RequestGetter;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
@@ -37,14 +39,17 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 
 	private static Log log = LogFactory.getLog(SakaiPersonEntityProviderImpl.class);
 	
+    	private ProfileManager profileManager;
+	public void setProfileManager(ProfileManager profileManager) {
+		this.profileManager = profileManager;
+	}
+
 	private SakaiPersonManager sakaiPersonManager;
 	public void setSakaiPersonManager(SakaiPersonManager spm) {
 		sakaiPersonManager = spm;
 	}
 
 	private SessionManager sessionManager;
-	
-
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
 	}
@@ -221,19 +226,44 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		if(sakaiperson == null) {
 			throw new EntityNotFoundException("No profile image for " + ref.getId(), ref.getReference());
 		}
-		//TODO - we may need to capture the official photo preferred option
-		
-		String url = sakaiperson.getPictureUrl();
-		if (StringUtils.isBlank(url)) {
-			url = "/profilewow-tool/images/noimage.gif";
-		}
 
-		if(StringUtils.isNotBlank(url)) {
-			try {
-				log.info("found image at: " + url);
-				requestGetter.getResponse().sendRedirect(url);
-			} catch (IOException e) {
-				throw new EntityException("Error redirecting to external image for " + ref.getId() + " : " + e.getMessage(), ref.getReference());
+		if (sakaiperson.isSystemPicturePreferred()) {
+			// Official photo selected by user as profile photo - output as bytestream
+                        byte[] displayPhoto = profileManager.getInstitutionalPhotoByUserId(uuid, false);
+                        if (displayPhoto != null && displayPhoto.length > 0) {
+                                log.debug("Display University ID photo for user:" + uuid);
+				try {
+					out.write(displayPhoto);
+					ActionReturn actionReturn = new ActionReturn(null, "image/jpeg", out);
+
+					/*Map<String,String> headers = new HashMap<>();
+					headers.put("Expires", "Mon, 01 Jan 2001 00:00:00 GMT");
+					headers.put("Cache-Control","no-cache, must-revalidate, max-age=0");
+					headers.put("Pragma", "no-cache");
+					*/
+
+					//actionReturn.setHeaders(headers);
+
+					return actionReturn;
+				} catch (IOException e) {
+					throw new EntityException("Error retrieving profile image for " + uuid + " : " + e.getMessage(), ref.getReference());
+				}
+			}
+		} else {
+			// Profile URL as profile photo
+			String url = sakaiperson.getPictureUrl();
+
+			if (StringUtils.isBlank(url)) {
+				url = "/profilewow-tool/images/noimage.gif";
+			}
+
+			if(StringUtils.isNotBlank(url)) {
+				try {
+					log.info("found image at: " + url);
+					requestGetter.getResponse().sendRedirect(url);
+				} catch (IOException e) {
+					throw new EntityException("Error redirecting to external image for " + ref.getId() + " : " + e.getMessage(), ref.getReference());
+				}
 			}
 		}
 		

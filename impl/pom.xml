@@ -103,6 +103,11 @@
 			<artifactId>sakai-common-edu-person-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.sakaiproject.profile</groupId>
+			<artifactId>profile-api</artifactId>
+			<version>11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.sakaiproject.common</groupId>
 			<artifactId>sakai-common-manager-api</artifactId>
 		</dependency>

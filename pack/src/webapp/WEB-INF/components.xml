@@ -7,18 +7,18 @@
 	<bean
 		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
 		class="org.sakaiproject.profilesearch.logic.impl.SakaiPersonEntityProviderImpl">
-		<property name="sakaiPersonManager"
-			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
-			<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
-			 <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"/>  
-			 <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
-			 <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+		<property name="sakaiPersonManager" ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
+	        <property name="profileManager" ref="org.sakaiproject.api.app.profile.ProfileManager" />
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+		<property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"/>  
+		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
 	</bean>
- <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
- 	class="org.sakaiproject.profilesearch.logic.impl.OfficialPictureEntityProvider">
- 		<property name="sakaiPersonManager"
-			ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
-</bean>
+
+	<bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
+ 		class="org.sakaiproject.profilesearch.logic.impl.OfficialPictureEntityProvider">
+ 		<property name="sakaiPersonManager" ref="org.sakaiproject.api.common.edu.person.SakaiPersonManager" />
+	</bean>
 
 <!-- 
    <bean id="blogEntryAdaptor" 
