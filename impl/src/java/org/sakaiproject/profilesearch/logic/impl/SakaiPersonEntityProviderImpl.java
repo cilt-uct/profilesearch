@@ -227,7 +227,7 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 			throw new EntityNotFoundException("No profile image for " + ref.getId(), ref.getReference());
 		}
 
-		if (sakaiperson.isSystemPicturePreferred()) {
+		if (Boolean.TRUE.equals(sakaiperson.isSystemPicturePreferred())) {
 			// Official photo selected by user as profile photo - output as bytestream
                         byte[] displayPhoto = profileManager.getInstitutionalPhotoByUserId(uuid, false);
                         if (displayPhoto != null && displayPhoto.length > 0) {
