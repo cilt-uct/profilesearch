@@ -220,7 +220,7 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 		}
 		
 		//get the SP object
-		log.info("looking for SakaiUser: " + uuid);
+		log.debug("looking for SakaiUser: " + uuid);
 		sakaiperson = sakaiPersonManager.getSakaiPerson(uuid, (sakaiPersonManager.getUserMutableType()));
 		
 		if(sakaiperson == null) {
@@ -259,7 +259,7 @@ public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implem
 
 			if(StringUtils.isNotBlank(url)) {
 				try {
-					log.info("found image at: " + url);
+					log.debug("found image at: " + url);
 					requestGetter.getResponse().sendRedirect(url);
 				} catch (IOException e) {
 					throw new EntityException("Error redirecting to external image for " + ref.getId() + " : " + e.getMessage(), ref.getReference());
