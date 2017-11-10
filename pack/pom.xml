@@ -11,7 +11,7 @@
    </organization>
    <inceptionYear>2007</inceptionYear>
    <description>Profilesearch components pack (special Sakai convention)</description>
-   <version>11-SNAPSHOT</version>
+   <version>12-SNAPSHOT</version>
    <packaging>sakai-component</packaging>
 
    <properties>
@@ -22,7 +22,7 @@
    <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>profilesearch</artifactId>
-      <version>11-SNAPSHOT</version>
+      <version>12-SNAPSHOT</version>
    </parent>
 
    <dependencies>
@@ -30,7 +30,7 @@
       <dependency>
          <groupId>org.sakaiproject.profilesearch</groupId>
          <artifactId>profilesearch-impl</artifactId>
-         <version>11-SNAPSHOT</version>
+         <version>${project.version}</version>
          <scope>runtime</scope>
       </dependency>
    </dependencies>
