@@ -91,24 +91,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.common</groupId>
-			<artifactId>sakai-common-type-api</artifactId>
+			<artifactId>sakai-common-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.search</groupId>
 			<artifactId>search-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.sakaiproject.common</groupId>
-			<artifactId>sakai-common-edu-person-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.sakaiproject.profile</groupId>
 			<artifactId>profile-api</artifactId>
 			<version>12-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.sakaiproject.common</groupId>
-			<artifactId>sakai-common-manager-api</artifactId>
 		</dependency>
 
 		<dependency>
