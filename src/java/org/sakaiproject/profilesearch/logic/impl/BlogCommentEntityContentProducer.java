@@ -26,8 +26,10 @@ import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.util.FormattedText;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BlogCommentEntityContentProducer implements EntityContentProducer {
-	private static Log log = LogFactory.getLog(BlogCommentEntityContentProducer.class);
 	
 	private BlogLogic blogLogic;
 	public void setBlogLogic(BlogLogic blogLogic) {

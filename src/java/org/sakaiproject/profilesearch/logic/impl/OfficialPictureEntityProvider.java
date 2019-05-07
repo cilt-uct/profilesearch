@@ -6,13 +6,15 @@ import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.AutoRegisterEntityProvider;
 
+@Slf4j
 public class OfficialPictureEntityProvider extends AbstractEntityProvider implements CoreEntityProvider,
 		AutoRegisterEntityProvider {
 
-	private static Log log = LogFactory.getLog(OfficialPictureEntityProvider.class);
 	
 	private SakaiPersonManager sakaiPersonManager;
 	public void setSakaiPersonManager(SakaiPersonManager spm) {

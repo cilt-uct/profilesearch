@@ -26,8 +26,10 @@ import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.util.FormattedText;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BlogwowEntryEntityContentProducer implements EntityContentProducer {
-	private static Log log = LogFactory.getLog(BlogwowEntryEntityContentProducer.class);
 	
 	private BlogLogic blogLogic;
 	public void setBlogLogic(BlogLogic blogLogic) {
