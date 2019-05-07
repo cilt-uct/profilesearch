@@ -5,12 +5,10 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.sakaiproject.api.app.profile.ProfileManager;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
-import org.sakaiproject.api.app.profile.ProfileManager;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
@@ -32,12 +30,14 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
+import lombok.extern.slf4j.Slf4j;
+
 //, ActionsExecutable
+@Slf4j
 public class SakaiPersonEntityProviderImpl extends AbstractEntityProvider implements
 		 CoreEntityProvider,
 		AutoRegisterEntityProvider, RESTful, RequestAware  {
 
-	private static Log log = LogFactory.getLog(SakaiPersonEntityProviderImpl.class);
 	
     	private ProfileManager profileManager;
 	public void setProfileManager(ProfileManager profileManager) {

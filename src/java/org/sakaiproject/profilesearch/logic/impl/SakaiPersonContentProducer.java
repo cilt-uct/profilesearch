@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -44,13 +42,16 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author dhorwitz
  *
  */
+@Slf4j
 public class SakaiPersonContentProducer implements EntityContentProducer {
 
-	private static Log log = LogFactory.getLog(SakaiPersonContentProducer.class);
+	
 	// runtime dependency
 	private List<String> addEvents = null;
 

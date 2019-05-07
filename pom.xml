@@ -19,8 +19,8 @@
 	<!-- the base is parent -->
 	<parent>
 		<groupId>org.sakaiproject</groupId>
-		<artifactId>profilesearch</artifactId>
-		<version>12-SNAPSHOT</version>
+		<artifactId>master</artifactId>
+		<version>19-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -83,7 +83,6 @@
 		<dependency>
 			<groupId>org.sakaiproject.entitybroker</groupId>
 			<artifactId>entitybroker-api</artifactId>
-
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.entitybroker</groupId>
@@ -100,12 +99,12 @@
 		<dependency>
 			<groupId>org.sakaiproject.profile</groupId>
 			<artifactId>profile-api</artifactId>
-			<version>12-SNAPSHOT</version>
+			<version>19-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.blogwow</groupId>
 			<artifactId>sakai-blogwow-api</artifactId>
-			<version>12-SNAPSHOT</version>
+			<version>19-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -116,12 +115,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 	</dependencies>
 
