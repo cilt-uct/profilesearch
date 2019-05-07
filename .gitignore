@@ -1,13 +1,3 @@
-.idea
-.project
-.classpath
-.settings
-*.iml
-*.swp
-*.orig
-*.rej
+m2-target
 target
-sakai-demo.tar.gz
-sakai-demo.zip
-.directory
-.sass-cache
+bin
