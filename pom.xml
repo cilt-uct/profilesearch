@@ -21,6 +21,7 @@
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>master</artifactId>
 		<version>19-SNAPSHOT</version>
+        <relativePath>../master/pom.xml</relativePath>
 	</parent>
 
 	<dependencies>
